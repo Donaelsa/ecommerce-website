@@ -1,0 +1,101 @@
+<h3>Place Order</h3>
+<h4>{{user._id}}</h4>
+<section>
+    <div class="container mt-5">
+<form action="" id="checkout_form">
+  <div class="row">
+    <div class="col-md-6">
+      <label>Name</label>
+      <input type="text" name="name">
+
+      <label>Address</label>
+      <input type="textarea" name="address">
+      <label>Pincode</label>
+      <input type="text" name="pincode">
+      <label>Mobile</label>
+      <input type="text" name="mobile">
+      <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+</div>
+</div>
+<div class="col-md-4">
+  <div class="container mt-5 ml-5 checkout">
+  <h4>Total: RS.{{total}}</h4>
+  <hr>
+<div class="payment">
+<p>Payment Method</p>
+  <label class="radio-inline">Cash On Delivery<input name="payment_method" type="radio" value="COD" checked></label>
+  <label class="radio-inline">Online Payment<input name="payment_method" type="radio" value="online"></label>
+  <button type="submit" class="btn btn-primary float-ight" >Checkout</button>
+</div>
+  </div>
+</div>
+  
+  </form>
+    </div>
+</section>
+
+<script>
+  $("#checkout_form").submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+      url:'/place_order',
+      method:'post',
+      data:$('#checkout_form').serialize(),
+      success:(response)=>{
+        alert(response)
+        if(response.COD_Success){
+          location.href='/order_success'
+        }else{ 
+          razorpayPayment(response)
+        }
+      }
+    })
+  })
+
+  function razorpayPayment(order){
+    var options = {
+    "key": "rzp_test_UdRoI11AqyPPmk", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "GeorgeTech IT Solutions Private Ltd",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+       /* alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);*/
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Dona Elsa George",
+        "email": "donaelsa@georgestech.com",
+        "contact": "9745906689"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.open();
+  }
+function verifyPayment(payment,order){
+$.ajax({
+  url:'/verify_payment',
+  data:{
+    payment,
+    order
+  },
+  method:'post',
+  if(response.status){
+    location.href='/order_success'
+  }else{
+    alert("Payment failed!!")
+  }
+})
+}
+
+</script>

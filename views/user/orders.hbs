@@ -1,0 +1,33 @@
+<section>
+    <table class="table">
+        <thead>
+         <tr>
+            <td>Date</td>
+            <td>Address</td>
+            <td>Pincode</td>
+            <td>Mobile</td>
+            <td>status</td>
+            <td>Price</td>
+            <td></td>
+         </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+<tr>
+    <td>{{this.date}}</td>
+    <td>{{this.deliveryDetails.address}}</td>
+    <td>{{this.deliveryDetails.pincode}}</td>
+    <td>{{this.deliveryDetails.mobile}}</td>
+    <td>{{this.status}}</td>
+    <td>{{totalAmount}}</td>
+    <td>
+        <a href="/view_ordered_products/{{this._id}}" class="btn btn-primary">View Product Details</a>
+    </td>
+    
+</tr>
+{{/each}}
+
+        </tbody>
+    </table>
+    
+</section>

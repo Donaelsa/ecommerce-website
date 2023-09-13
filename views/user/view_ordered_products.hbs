@@ -1,0 +1,30 @@
+<section>
+        <table class="table">
+        <thead>
+           
+         <tr>
+            <td>Product name</td>
+            <td>Product</td>
+            <td>Description</td>
+            <td>Price</td>
+            <td>Quantity</td>
+
+         </tr>
+        </thead>
+        <tbody>
+             {{#each products}}
+             
+<tr>
+    <td>{{this.product.name}}</td>
+    <td><img src="/product_images/{{this.item}}.jpg" alt="no image" style="height:100px;width:150px"></td>
+    <td>{{this.product.description}}</td>
+    <td>{{this.product.price}}</td>
+    
+    <td>{{this.quantity}}</td>
+    
+</tr>
+{{/each}}
+
+        </tbody>
+    </table>
+</section>
